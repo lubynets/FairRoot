@@ -319,7 +319,9 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid,
     if (fBeamAngle) {
         // Rotate the track (event) from the rotated beam direction system into
         // the fixed global experiment coordinate system
-        mom.RotateUz(fBeamDirection.Unit());
+        TVector3 rot_axis(-fBeamDirection.Unit().Y(), fBeamDirection.Unit().X(), 0);
+        auto rot_angle = TMath::ACos(fBeamDirection.Unit().Z());
+        mom.Rotate(rot_angle, rot_axis);
     }
 
     // ---> Convert K0 and AntiK0 into K0s and K0L
